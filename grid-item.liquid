@@ -1,0 +1,64 @@
+{% comment %} Snippet: product-grid-item.liquid {% endcomment %}
+/// original snippet code ///
+
+<button type="button" class="radio__fieldset__arrow radio__fieldset__arrow--next is-hidden" data-scrollbar-arrow-next>
+                {% render 'icon-nav-arrow-right' %}
+                <span class="visually-hidden">{{ 'products.general.see_all' | t }}</span>
+              </button>
+            </div>
+          {%- endif -%}
+        </form>
+
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+{%- endif -%}
+
+    
+{%- liquid
+  assign double_img = false
+<!-- Hover image swap -->
+   if product.media.size >= 3 
+  if product.media[2].preview_image and settings.image_hover_enable
+    assign double_img = true
+  endif
+else
+   if product.media[1].preview_image and settings.image_hover_enable
+    assign double_img = true
+  endif
+   endif
+<!--end of hover image swap -->
+   
+  assign current_variant = product.first_available_variant
+  assign product_url = product.url
+
+  capture item_unique
+    echo 'product-item--' | append: section.id | append: '-' | append: product.id
+  endcapture
+
+/// original snippet code ///
+
+when 'external_video'
+                    if media.host == 'youtube'
+                      echo media | external_video_url: autoplay: true, playsinline: true, loop: true, playlist: media.external_id, controls: false, mute: true, showinfo: false | external_video_tag: loading: 'lazy', data-host: media.host
+                    else
+                      echo media | external_video_url: autoplay: true, playsinline: true, loop: true, controls: false, muted: true | external_video_tag: data-host: media.host
+                    endif
+                endcase
+              -%}
+            {%- else -%}
+              
+                <!-- Product media hover swap -->
+                {%- if product.media.size >= 3 -%}
+                {%- render 'image' image: product.media[2].preview_image, aspect_ratio: aspect_ratio, sizes: sizes, widths: widths, cover: true -%}
+              {%- else -%}
+                {%- render 'image' image: product.media[1].preview_image, aspect_ratio: aspect_ratio, sizes: sizes, widths: widths, cover: true -%}
+              {%- endif -%}
+                <!-- End of product media hover swap -->
+
+              {% comment %}{%- render 'image' image: product.media[1].preview_image, aspect_ratio: aspect_ratio, sizes: sizes, widths: widths, cover: true -%}{% endcomment %}
+            {%- endif -%}
+          </div>
+
+/// rest of the original snippet code ///
