@@ -1,0 +1,112 @@
+{% comment %} Template: customers/register.liquid {% endcomment %}
+
+/// original theme code ///
+
+<div class="form-field">
+          <label for="password">{{ 'customer.register.password' | t }}</label>
+          <input type="password" value="" name="customer[password]" id="password" class="large password{% if form.errors contains 'password' %} error{% endif %}" placeholder="{{ 'customer.register.password' | t }}">
+        </div>
+
+      
+        <!-- Custom consent checkboxes with translations -->
+<div class='custom-consent'>
+    <div class="accepts-terms">
+        <input type="hidden" name="customer[accepts_terms]" value="false" />
+        <input type="checkbox" name="customer[accepts_terms]" value="true" checked="checked" />
+
+        <!-- English -->
+        <label class="lang-en" for="accepts-terms">
+            I agree to the <a href="https://eredizucca.com/en/policies/terms-of-service">Terms & Conditions</a>
+        </label>
+        <p class="errorTerms lang-en" style="display:none; color: var(--error)">
+            You must agree to the Terms & Conditions to register an account
+        </p>
+
+        <!-- Italian -->
+        <label class="lang-it" for="accepts-terms" style="display:none;">
+            Accetto i <a href="https://eredizucca.com/it/policies/terms-of-service">Termini e Condizioni</a>
+        </label>
+        <p class="errorTerms lang-it" style="display:none; color: var(--error)">
+            Devi accettare i Termini e Condizioni per registrare un account
+        </p>
+    </div>
+
+    <div class="accepts-marketing">
+        <input type="hidden" name="customer[accepts_marketing]" value="false" />
+        <input type="checkbox" name="customer[accepts_marketing]" value="true" checked="checked" />
+
+        <!-- English -->
+        <label class="lang-en" for="accepts-marketing">
+            I consent to the processing of my personal data for direct marketing purposes, invitations to events, participation in market research and for customer satisfaction surveys (via email, post, telephone calls, including by automated means - SMS and/or social media) relating to the products and services of Eredi Zucca.
+        </label>
+
+        <!-- Italian -->
+        <label class="lang-it" for="accepts-marketing" style="display:none;">
+            Acconsento al trattamento dei miei dati personali per scopi di marketing diretto, inviti a eventi, partecipazione a ricerche di mercato e per sondaggi sulla soddisfazione del cliente (via e-mail, posta, telefonate, anche tramite mezzi automatizzati - SMS e/o social media) relativi ai prodotti e servizi di Eredi Zucca.
+        </label>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const termsInput = document.querySelector('.accepts-terms input[type="checkbox"]');
+    const markInput = document.querySelector('.accepts-marketing input[type="checkbox"]');
+    const termsErrorEn = document.querySelector('.errorTerms.lang-en');
+    const termsErrorIt = document.querySelector('.errorTerms.lang-it');
+    const formSubmit = document.querySelector('#create_customer > button');
+    const formSubmit2 = document.querySelector('#create_customer > p > input');
+
+    // Detect the current locale
+    const currentLocale = document.documentElement.lang || 'en';
+
+    // Hide all error messages initially
+    termsErrorEn.style.display = 'none';
+    termsErrorIt.style.display = 'none';
+
+    // Toggle language based on locale
+    if (currentLocale === 'it') {
+        document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.lang-it').forEach(el => el.style.display = 'inline');
+    } else {
+        document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'inline');
+        document.querySelectorAll('.lang-it').forEach(el => el.style.display = 'none');
+    }
+
+    // Function to check if terms checkbox is checked
+    function checkFormValidity() {
+        let isValid = true;
+
+        if (!termsInput.checked) {
+            if (currentLocale === 'it') {
+                termsErrorIt.style.display = "block";
+            } else {
+                termsErrorEn.style.display = "block";
+            }
+            isValid = false;
+        } else {
+            termsErrorEn.style.display = "none";
+            termsErrorIt.style.display = "none";
+        }
+
+        if (formSubmit) { formSubmit.disabled = !isValid; }
+        if (formSubmit2) { formSubmit2.disabled = !isValid; }
+    }
+
+    // Event listener for terms checkbox
+    termsInput.addEventListener("click", checkFormValidity);
+
+    // Initial check
+    checkFormValidity();
+}, false);
+
+
+</script>
+        <!-- End of custom consent checkboxes-->
+        
+        <div class="form-field action-bottom">
+          <button type="submit" class="btn btn--primary btn--solid">
+            <span>{{ 'customer.register.submit' | t }}</span>
+          </button>
+        </div>
+
+/// rest of the original code ///
